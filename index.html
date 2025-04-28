@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPANET Backdrop Scale Calculator</title>
+    <style>
+        body {
+            font-family: 'Sarabun', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .calculate-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .calculate-btn:hover {
+            background-color: #2980b9;
+        }
+        .output-container {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            border-left: 4px solid #3498db;
+        }
+        .output-group {
+            margin-bottom: 20px;
+        }
+        .output-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        .result-box {
+            background-color: #e8f4fd;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 16px;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .card-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px;
+        }
+        .form-col {
+            flex: 1;
+            padding: 0 10px;
+            min-width: 200px;
+        }
+        .copy-btn {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+        .copy-btn:hover {
+            background-color: #219653;
+        }
+        .help-text {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .developer-info {
+            margin-top: 30px;
+            text-align: center;
+            padding: 15px;
+            border-top: 1px solid #eee;
+            color: #555;
+        }
+        .developer-info h3 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        .developer-info p {
+            margin: 5px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #777;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>EPANET Backdrop Scale Calculator</h1>
+        
+        <div class="card">
+            <div class="card-title">ข้อมูลนำเข้า</div>
+            
+            <div class="form-row">
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="gridSizeX">ขนาด Grid X:</label>
+                        <input type="number" id="gridSizeX" value="17000" step="any">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="epanetDistanceX">ระยะใน EPANET X:</label>
+                        <input type="number" id="epanetDistanceX" value="7667.250000" step="any">
+                    </div>
+                </div>
+                
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="gridSizeY">ขนาด Grid Y:</label>
+                        <input type="number" id="gridSizeY" value="19000" step="any">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="epanetDistanceY">ระยะใน EPANET Y:</label>
+                        <input type="number" id="epanetDistanceY" value="8521.350000" step="any">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">EPANET Dimension เดิม</div>
+            
+            <div class="form-row">
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="lowerLeftX">Lower Left X:</label>
+                        <input type="number" id="lowerLeftX" value="1064640.000000" step="any">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="lowerLeftY">Lower Left Y:</label>
+                        <input type="number" id="lowerLeftY" value="1665700.000000" step="any">
+                    </div>
+                </div>
+                
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="upperRightX">Upper Right X:</label>
+                        <input type="number" id="upperRightX" value="1080730.000000" step="any">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="upperRightY">Upper Right Y:</label>
+                        <input type="number" id="upperRightY" value="1685780.000000" step="any">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="calculate-btn" id="calculateBtn">คำนวณ</button>
+        
+        <div class="output-container" id="outputContainer" style="display: none;">
+            <div class="output-group">
+                <div class="output-title">ค่า Factor:</div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label>Factor X:</label>
+                            <div class="result-box" id="factorX"></div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label>Factor Y:</label>
+                            <div class="result-box" id="factorY"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="output-group">
+                <div class="output-title">ค่า Dimension ใหม่:</div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label>Upper Right X ใหม่:</label>
+                            <div class="result-box" id="newUpperRightX"></div>
+                            <button class="copy-btn" data-copy="newUpperRightX">คัดลอก</button>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label>Upper Right Y ใหม่:</label>
+                            <div class="result-box" id="newUpperRightY"></div>
+                            <button class="copy-btn" data-copy="newUpperRightY">คัดลอก</button>
+                        </div>
+                    </div>
+                </div>
+                <p class="help-text">นำค่า Upper Right X และ Y ใหม่ไปกรอกในช่อง Upper Right ของ EPANET</p>
+            </div>
+        </div>
+        
+        <div class="developer-info">
+            <h3>พัฒนาโดย</h3>
+            <p><strong>นายปฏิพล กันโฮมภู</strong></p>
+            <p>งานน้ำสูญเสีย กองระบบจำหน่าย กปภ.ข.8</p>
+            <p>สอบถามโทร. 083-669-8001</p>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 EPANET Backdrop Scale Calculator - พัฒนาเพื่อใช้งานกับโปรแกรม EPANET</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const calculateBtn = document.getElementById('calculateBtn');
+            
+            calculateBtn.addEventListener('click', function() {
+                // รับค่าจาก input
+                const gridSizeX = parseFloat(document.getElementById('gridSizeX').value) || 0;
+                const epanetDistanceX = parseFloat(document.getElementById('epanetDistanceX').value) || 0;
+                const gridSizeY = parseFloat(document.getElementById('gridSizeY').value) || 0;
+                const epanetDistanceY = parseFloat(document.getElementById('epanetDistanceY').value) || 0;
+                
+                const lowerLeftX = parseFloat(document.getElementById('lowerLeftX').value) || 0;
+                const lowerLeftY = parseFloat(document.getElementById('lowerLeftY').value) || 0;
+                const upperRightX = parseFloat(document.getElementById('upperRightX').value) || 0;
+                const upperRightY = parseFloat(document.getElementById('upperRightY').value) || 0;
+                
+                // คำนวณ Factor
+                const factorX = gridSizeX / epanetDistanceX;
+                const factorY = gridSizeY / epanetDistanceY;
+                
+                // คำนวณ Dimension ใหม่
+                const newUpperRightX = lowerLeftX + (upperRightX - lowerLeftX) * factorX;
+                const newUpperRightY = lowerLeftY + (upperRightY - lowerLeftY) * factorY;
+                
+                // แสดงผลลัพธ์
+                document.getElementById('factorX').textContent = factorX.toFixed(6);
+                document.getElementById('factorY').textContent = factorY.toFixed(6);
+                document.getElementById('newUpperRightX').textContent = newUpperRightX.toFixed(8);
+                document.getElementById('newUpperRightY').textContent = newUpperRightY.toFixed(8);
+                
+                // แสดง output container
+                document.getElementById('outputContainer').style.display = 'block';
+            });
+            
+            // ฟังก์ชันคัดลอกข้อความ
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const elementId = this.getAttribute('data-copy');
+                    const textToCopy = document.getElementById(elementId).textContent;
+                    
+                    navigator.clipboard.writeText(textToCopy).then(() => {
+                        // เปลี่ยนข้อความปุ่มชั่วคราว
+                        const originalText = this.textContent;
+                        this.textContent = 'คัดลอกแล้ว!';
+                        
+                        setTimeout(() => {
+                            this.textContent = originalText;
+                        }, 2000);
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
